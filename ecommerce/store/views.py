@@ -1,5 +1,5 @@
 import json
-
+import datetime
 from django.shortcuts import render
 from .models import *
 from django.http import JsonResponse
@@ -65,4 +65,27 @@ def update_item(request):
 
 
 def process_order(request):
-    return JsonResponse('Payment complete', safe=False)
+    data = json.loads(request.body)
+    if request.user.is_authenticated:
+        customer = request.user.customer
+        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        total = float(data['form']['total'])
+        order.transaction_id = datetime.datetime.now().timestamp()
+
+        if total == float(order.get_total_data['total_price']):
+            order.complete = True
+        order.save()
+
+        if order.is_need_shipping_info:
+            ShippingAddress.objects.create(
+                customer=customer,
+                order=order,
+                address=data['shipping_info']['address'],
+                city=data['shipping_info']['city'],
+                state=data['shipping_info']['state'],
+                zipcode=data['shipping_info']['zipcode'],
+            )
+
+    else:
+        pass
+    return JsonResponse('Payment completed', safe=False)
