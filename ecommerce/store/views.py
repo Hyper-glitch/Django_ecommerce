@@ -31,6 +31,7 @@ def is_user_auth(request):
         order = {
             'get_cart_total': 0,
             'get_cart_items': 0,
+            'shipping_info': False,
         }
         cart_items = order['get_cart_items']
     context = {
