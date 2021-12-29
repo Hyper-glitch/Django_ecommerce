@@ -57,6 +57,15 @@ class Order(models.Model):
         total_data['total_price'] = sum([item.get_total_price for item in order_items])
         return total_data
 
+    @property
+    def is_need_shipping_info(self):
+        shipping_info = False
+        order_items = self.orderitem_set.all()
+        for order_item in order_items:
+            if not order_item.product.digital:
+                shipping_info = True
+        return shipping_info
+
     def __str__(self):
         return str(self.id)
 
