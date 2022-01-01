@@ -60,8 +60,13 @@
                 <div style="flex:1"><p>x{{ item.quantity }}</p></div>
             </div>
             {% endfor %}
-            <h5>Items: {{ order.get_total_data.total_items }}</h5>
-            <h5>Total: ${{ order.get_total_data.total_price|floatformat:2 }}</h5>
+            {% if user.is_authenticated %}
+                <h5>Items: {{ order.get_total_data.total_items }}</h5>
+                <h5>Total: ${{ order.get_total_data.total_price|floatformat:2 }}</h5>
+            {% else %}
+                <h5>Items: {{ order.get_cart_items }}</h5>
+                <h5>Total: ${{ order.get_cart_total|floatformat:2 }}</h5>
+            {% endif %}
         </div>
     </div>
 </div>
