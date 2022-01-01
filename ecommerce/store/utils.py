@@ -69,3 +69,24 @@ def is_user_auth(request):
     else:
         context = cart_with_cookies(request)
     return context
+
+
+def guest_order(request, data):
+    name = data['form']['name']
+    email = data['form']['email']
+    cookie = cart_with_cookies(request)
+    items = cookie['items']
+
+    customer, created = Customer.objects.get_or_create(email=email)
+    customer.name = name
+    customer.save()
+
+    order = Order.objects.create(customer=customer, complete=False)
+    for item in items:
+        product = Product.objects.get(id=item['product']['id'])
+        order_item = OrderItem.objects.create(
+            product=product,
+            order=order,
+            quantity=item['quantity'],
+        )
+    return customer, order
