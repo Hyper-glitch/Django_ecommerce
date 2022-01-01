@@ -8,7 +8,7 @@ def cart_with_cookies(request):
     order = {
         'get_cart_total': 0,
         'get_cart_items': 0,
-        'shipping_info': False,
+        'is_need_shipping_info': False,
     }
     cart_items = order['get_cart_items']
 
