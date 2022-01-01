@@ -1,9 +1,9 @@
-import json
 import datetime
+import json
 from django.shortcuts import render
 from .models import *
 from django.http import JsonResponse
-from .utils import is_user_auth
+from .utils import is_user_auth, guest_order
 
 
 def store(request):
@@ -47,26 +47,28 @@ def update_item(request):
 
 def process_order(request):
     data = json.loads(request.body)
+
     if request.user.is_authenticated:
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        total = float(data['form']['total'])
-        order.transaction_id = datetime.datetime.now().timestamp()
-
-        if total == float(order.get_total_data['total_price']):
-            order.complete = True
-        order.save()
-
-        if order.is_need_shipping_info:
-            ShippingAddress.objects.create(
-                customer=customer,
-                order=order,
-                address=data['shipping_info']['address'],
-                city=data['shipping_info']['city'],
-                state=data['shipping_info']['state'],
-                zipcode=data['shipping_info']['zipcode'],
-            )
-
     else:
-        pass
+        customer, order = guest_order(request, data)
+
+    total = float(data['form']['total'])
+    order.transaction_id = datetime.datetime.now().timestamp()
+
+    if total == float(order.get_total_data['total_price']):
+        order.complete = True
+    order.save()
+
+    if order.is_need_shipping_info:
+        ShippingAddress.objects.create(
+            customer=customer,
+            order=order,
+            address=data['shipping_info']['address'],
+            city=data['shipping_info']['city'],
+            state=data['shipping_info']['state'],
+            zipcode=data['shipping_info']['zipcode'],
+        )
+
     return JsonResponse('Payment completed', safe=False)
