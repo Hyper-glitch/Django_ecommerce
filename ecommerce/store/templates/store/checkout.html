@@ -5,6 +5,7 @@
     <div class="col-lg-6">
         <div class="box-element" id="form-wrapper">
             <form id="form">
+                {% csrf_token %}
                 <div id="user-info">
                     <div class="form-field">
                         <input required class="form-control" type="text" name="name" placeholder="Name..">
@@ -70,7 +71,7 @@
         </div>
     </div>
 </div>
-<script src="https://www.paypal.com/sdk/js?client-id=AdQ1KBG7wGhADePOw6CTQJ7qA6qGH8DdzzZG7QTOgk1hWMf4BXTZr-g5YigWFK6ZEQVS6RkC1hz7KuQt&currency=USD"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=AQJRiJ0QrE9O21c43XaWDDj-RTzRvZNlN0ijZsYUBHSTm-jmhYOEi-BdClaMGCJgk8IUAu6uyiHQuUY1&currency=USD"></script>
 
 <script>
     var total = '{{order.get_total_data.total_price}}'
@@ -122,6 +123,8 @@
     }
 
     var form = document.getElementById('form')
+    csrftoken = form.getElementsByTagName('input')[0].value
+    console.log('Newtoken:', csrftoken)
 
     form.addEventListener('submit', function(e){
         e.preventDefault()
