@@ -18,3 +18,4 @@ To run this project, install it locally using:
 
 ## Here is the application on the Linux server
 You can test my application in a docker containers (web_app and postgresql) on a Linux server
+http://139.162.137.249:7000/
