@@ -1,9 +1,10 @@
-version: "3.9"
+version: "3"
 
 services:
   db:
     image: postgres:13-alpine
     container_name: postgres_ecom
+    restart: always
     networks:
       - ecom_network
     volumes:
@@ -13,8 +14,9 @@ services:
   ecommerce:
     build: .
     container_name: django_ecom
+    restart: always
     ports:
-      - 8000:8000
+      - 7000:7000
     networks:
       - ecom_network
     volumes:
@@ -24,7 +26,9 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=mysecretpassword
       - POSTGRES_HOST=db
-    command: python manage.py runserver 0.0.0.0:8000
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:7000"
     depends_on:
       - db
 
