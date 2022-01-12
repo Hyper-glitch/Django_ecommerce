@@ -2,7 +2,6 @@
 This pet project allows you to buy digital and non digital products like in online-shops.
 At this very moment users can add any products to their cart, also here is possibility to checkout their order with PayPal.
 Products are created through Django Admin.
-There were implemented pagination, possibility to filter posts by users and reset password by email.
 
 ## Technologies
 Project is created with:
