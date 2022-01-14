@@ -13,7 +13,9 @@ Project is created with:
 
 ## Setup
 To run this project, install it locally using:
-1. 
+1. git clone https://github.com/Hyper-glitch/Django_ecommerce.git
+2. docker-compose -f ./ecommerce/docker-compose.yml up -d (if you are in /Django_ecommerce)
+3. go to the http://0.0.0.0:7000/
 
 ## Here is the application on the Linux server
 You can test my application in a docker containers (web_app and postgresql) on a Linux server
