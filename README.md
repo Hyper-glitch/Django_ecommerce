@@ -17,6 +17,8 @@ To run this project, install it locally using:
 2. docker-compose -f ./ecommerce/docker-compose.yml up -d (if you are in /Django_ecommerce)
 3. go to the http://0.0.0.0:7000/
 
+![Algorithm schema](ecom.png)
+
 ## Here is the application on the Linux server
 You can test my application in a docker containers (web_app and postgresql) on a Linux server
 http://139.162.137.249:7000/
