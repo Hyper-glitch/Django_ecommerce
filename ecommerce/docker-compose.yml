@@ -21,13 +21,11 @@ services:
       - ecom_network
     volumes:
       - data:/ecommerce/volume/data
-    environment:
-      - POSTGRES_NAME=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=mysecretpassword
-      - POSTGRES_HOST=db
+    env_file:
+      - .env
     command: >
       sh -c "python manage.py migrate &&
+             python manage.py createsuperuser --noinput &&
              python manage.py runserver 0.0.0.0:7000"
     depends_on:
       - db
