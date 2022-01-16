@@ -3,7 +3,11 @@ from .models import *
 
 
 def cart_with_cookies(request):
-    cart = json.loads(request.COOKIES.get('cart'))
+    cookies_cart = request.COOKIES.get('cart')
+    if cookies_cart:
+        cart = json.loads(cookies_cart)
+    else:
+        cart = ''
     items = []
     order = {
         'get_cart_total': 0,
